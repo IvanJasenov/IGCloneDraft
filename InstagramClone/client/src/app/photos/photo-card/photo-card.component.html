@@ -1,0 +1,138 @@
+<div class="card" style="width: 45rem;">
+  <div class="card-header">
+    <div class="ng-container row justify-content-between" >
+      <div class="ml-2 row" style="cursor: pointer">
+        <img class="col-3 rounded-circle img-responsive" src="{{photoElement.photoOwner.photoUrl}}"
+         (mouseenter)="showModalForUser(photoElement.photoOwner.username)"
+         (mouseleave)="hideModalForUser(photoElement.photoOwner.username)"
+         [routerLink]="['/instagramMembers/', photoElement.photoOwner.username]"
+         tooltip="Go to Profile"
+         (click)="navigateToUser(photoElement?.photoOwner.username)">
+        <div class="ml-1 d-inline col-8 text-align-center">
+          <a class="user-link ml-1" (click)="navigateToUser(photoElement?.photoOwner.username)" > {{photoElement?.photoOwner.username}}</a>
+          <span class="ml-2"> <i class="fa fa-map-marker"> {{photoElement?.photoOwner.country}}</i> </span>
+        </div>
+      </div>
+      <div class="d-block mr-2">
+        <button type="button" style="vertical-align:center; border: none" (click)="openModalForOptions()">
+          <i class="fa fa-ellipsis-h fa-lg" ></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+  <div class="card-body">
+    <img class="card-img-top" src="{{photoElement.url}}" alt="{{photoElement?.photoOwner.knownAs}}" title="{{photoElement?.photoOwner.knownAs}}">
+    <div *ngIf="likedPhtosIds" class="mt-2">
+       <i *ngIf="!canBeLiked(photoElement.id)" (click)="likePhoto(+photoElement.id)" class="fa fa-heart-o fa-lg"></i>
+       <i *ngIf="canBeLiked(photoElement.id)" (click)="deletePhotoLike(+photoElement.id)" class="fa fa-heart fa-lg"></i>
+       <span> {{numberOfLikesPerPhoto}} likes</span>
+    </div>
+
+
+    <div class="list-group mt-1">
+
+      <div *ngIf="photoElement.phCommentCreatorDtos && !showAllPhotoComments">
+        <div
+         *ngFor="let comment of photoElement.phCommentCreatorDtos.slice(0, 2); let i = index"
+           class="list-group-item list-group-item-action borderless p-0 my-2">
+          <div class="container row" *ngIf="i < 2 && !showAllPhotoComments" >
+            <div class="col-sm-10">
+               <img class="col-3 rounded-circle img-responsive" src="{{comment.commentCreator.photoUrl}}"
+                alt="{{comment.commentCreator.knownAs}}"  (click)="navigateToUser(comment.commentCreator.username)">
+              <button type="button" class="btn btn-link text-dark font-weight-bold"
+                (click)="navigateToUser(comment.commentCreator.username)">{{comment.commentCreator.username}}
+              </button> &nbsp; <span class="user-comment">{{comment.comment}} </span> -  <span class="ml-1">{{comment.dateCreated | timeAgo}}</span>
+            </div>
+            <div class="col-sm-2 text-center my-auto d-flex " >
+              <button class="btn" style="display:inline;" type="button" [disabled]="editMode"
+                tooltip="Delete Comment"
+                (click)="deleteCommentModal(comment.comment, photoElement.id, template)">
+                <i *ngIf="comment.commentCreator.username === currentUsername" class="fa fa-trash fa-lg" aria-hidden="true"></i>
+              </button>
+              <button class="btn" style="display:inline;" type="button"
+                tooltip="Edit Comment"
+                (click)="editComment(comment.comment, photoElement.id)">
+                <i *ngIf="comment.commentCreator.username === currentUsername" class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+
+            </div>
+          </div>
+
+          <!-- show this only once as second element -->
+          <a type="button" (click)="showAllComments()" [hidden]="i > 0 || photoElement.phCommentCreatorDtos.length - 2 === 0
+            || photoElement.phCommentCreatorDtos.length === 1" style="display: block;">
+            View all {{photoElement.phCommentCreatorDtos.length}} comments...
+          </a>
+        </div>
+      </div>
+
+      <div *ngIf="showAllPhotoComments">
+        <a type="button" (click)="showAllComments()" class="mb-2 ml-2 text-info"
+            style="display: block; position: sticky; top: 0; right: 0; color: dark;"> <i class="fa fa-arrow-up mr-1"></i>show less...
+        </a>
+        <cdk-virtual-scroll-viewport itemSize="10" class="example-viewport" style="position:relative">
+          <div *cdkVirtualFor="let comment of photoElement.phCommentCreatorDtos" class="example-item my-2">
+            <div class="container row">
+              <div class="col-sm-10">
+                <img class="col-3 rounded-circle img-responsive" src="{{comment.commentCreator.photoUrl}}"
+                  alt="{{comment.commentCreator.knownAs}}"  (click)="navigateToUser(comment.commentCreator.username)">
+                <button type="button" class="btn btn-link text-dark font-weight-bold"
+                  (click)="navigateToUser(comment.commentCreator.username)">{{comment.commentCreator.username}}
+                </button> &nbsp; <span class="user-comment">{{comment.comment}} </span> -  <span class="ml-1">{{comment.dateCreated | timeAgo}}</span>
+              </div>
+              <div class="col-sm-2 text-center my-auto d-flex">
+                <button class="btn" style="display:inline;" type="button" [disabled]="editMode"
+                tooltip="Delete Comment"
+                (click)="deleteCommentModal(comment.comment, photoElement.id, template)">
+                <i *ngIf="comment.commentCreator.username === currentUsername" class="fa fa-trash fa-lg" aria-hidden="true"></i>
+              </button>
+              <button class="btn" style="display:inline;" type="button"
+                tooltip="Edit Comment"
+                (click)="editComment(comment.comment, photoElement.id)">
+                <i *ngIf="comment.commentCreator.username === currentUsername" class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+              </div>
+            </div>
+          </div>
+          <!-- <a type="button" (click)="showAllComments()" class="mb-2"
+            style="display: block; position: absolute; top: 0; right: 0; color: dark;">show less...
+          </a> -->
+       </cdk-virtual-scroll-viewport>
+      </div>
+
+      <br>
+
+      <ng-template #template>
+        <div class="modal-body text-center">
+          <p>Delete this comment?</p>
+          <button type="button" class="btn btn-default" (click)="confirm()" >Yes</button>
+          <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
+        </div>
+      </ng-template>
+
+      <form #photoCommentForm="ngForm" (ngSubmit)="createComment()"><hr>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" style="border: transparent"
+            [(ngModel)]="photoComment"
+            name="photoComment" required placeholder="Add comment..." autocomplete="off">
+
+          <div *ngIf="!editMode" class="input-group-append" >
+            <button class="btn btn-info" style="outline: none"[disabled]="!photoCommentForm.valid" type="submit" id="button-addon2">Post</button>
+          </div>
+          <div *ngIf="editMode" class="input-group-append" >
+            <button class="btn btn-info ml-1" style="outline: none"[disabled]="!photoCommentForm.valid" type="submit" id="button-addon2">Save</button>
+            <button class="btn btn-danger ml-1" type="button"
+              (click)="cancelEdit()"
+              style="outline: none"
+              [disabled]="!photoCommentForm.valid"
+              id="button-addon2">Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+
+
+    </div>
+  </div>
+</div>

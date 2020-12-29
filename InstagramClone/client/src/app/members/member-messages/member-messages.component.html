@@ -1,0 +1,55 @@
+<!-- <h3 class="text-danger text-center" *ngIf="messageThread.length === 0">There are no messages with this user</h3>
+<ul *ngIf="messageThread.length > 0" class="list-group">
+  <li class="list-group-item" *ngFor="let message of messageThread">{{message.content}}</li>
+</ul> -->
+
+<div class="card">
+  <div class="card-body">
+    <div *ngIf="messageThread?.length === 0">
+      <h3 class="text-danger">There are no messages with this user</h3>
+    </div>
+
+    <ul *ngIf="messageThread?.length > 0" class="list-group">
+      <li class="list-group-item" *ngFor="let message of messageThread">
+        <div>
+          <span class="chat-img float-right">
+            <img class="rounded-circle" src="{{message.senderPhotoUrl}}" alt="{{message.senderName}}">
+          </span>
+          <div class="chat-body">
+            <div class="header">
+              <small class="text-muted">
+                <span class="fa fa-clock-o">Sent: {{message.dateSend | timeAgo}}</span>
+                <span class="text-danger" *ngIf="!message?.dateRead && message.senderUsername !== recipientUsername">
+                  (unread)
+                </span>
+                <span class="text-success" *ngIf="message?.dateRead && message.senderUsername !== recipientUsername">
+                  (read: {{message?.dateRead | timeAgo}})
+                </span>
+              </small>
+            </div>
+            <p>{{message.content}}</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card-footer">
+    <!-- this form reference has to be at the beginning of the form in order for the validation to work, [disabled]=....-->
+    <form #messageForm="ngForm" (ngSubmit)="onSubmit()" >
+      <div class="input-group">
+        <input type="text" class="form-control input-sm"
+          [(ngModel)]="messageContent"
+          name="messageContent"
+          required
+          placeholder="Send a private message"
+          autocomplete="off">
+        <div class="input-group-append">
+          <button [disabled]="!messageForm.valid" class="btn-primary" type="submit">Send</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+</div>

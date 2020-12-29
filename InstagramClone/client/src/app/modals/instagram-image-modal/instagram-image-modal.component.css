@@ -1,0 +1,41 @@
+.image-wrapper {
+  width: 80%;
+  height: 100%;
+}
+
+.rounded-circle {
+  width: 50px;
+  height: 50px;
+  border-color: red;
+  border-style: solid;
+  border-radius: 2px;
+  padding: 2px;
+}
+
+.user-link:hover {
+  color: black;
+  transform: scaleY(0.5);
+
+}
+
+.borderless {
+  border: 0 none;
+}
+
+.user-comment{
+  color: #003569;
+}
+
+.example-viewport {
+  height: 200px;
+  width: auto;
+  border: 0 none;
+}
+
+.example-item {
+  height: 50px;
+}
+
+.load-allComments {
+  display: none;
+}

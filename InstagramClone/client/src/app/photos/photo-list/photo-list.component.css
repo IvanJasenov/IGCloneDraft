@@ -1,0 +1,15 @@
+.user-info {
+  position: sticky;
+  top: 0;
+  margin-top: 10px;
+  height: 70vh;
+}
+
+.rounded-circle {
+  width: 100px;
+  height: 100px;
+  border-color: red;
+  border-style: solid;
+  border-radius: 2px;
+  padding: 2px;
+}

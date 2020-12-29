@@ -1,0 +1,26 @@
+<div class="card container bg-gradient-dark mt-3 " style="width: 18rem">
+  <div class="card-img-wrapper">
+    <img class="card-img-top p-2" src="{{photo.url || '../../../assets/default-user.png'}}">
+    <ul class="list-inline member-icons animate text-center">
+      <li class="list-inline-item">
+
+         <!-- disable this button for already liked users, extra task -->
+        <button
+          *ngIf="showLikeButton === true"
+           type="button"
+           (click)="showModal(photo.id)"
+           class="btn btn-transparent mr-1"><i class="fa fa-heart fa-lg" style="color: white"> {{numberOfLikesPerPhoto}}</i>
+          </button>
+        <button
+           type="button"
+           (click)="showModal(photo.id)"
+           class="btn btn-transparent mr-1"><i class="fa fa-comment fa-lg" style="color: white"> {{photo?.photoCommentsDto.length}}</i>
+        </button>
+
+      </li>
+    </ul>
+  </div>
+
+
+</div>
+

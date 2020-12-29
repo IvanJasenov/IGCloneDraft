@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <!-- <h4 class="modal-title pull-left">{{title}}</h4> -->
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row text-center">
+    <div class="col-12 col-lg-6 p-0">
+      <img class="image-wrapper" src="{{photoDto.url}}" alt="">
+    </div>
+    <div class="col-12 col-md-6 lg-info">
+      <div class="justify-content-center my-4" style="width: auto">
+        <!-- add component, list maybe for photo comments and make it able to add comment -->
+        <app-image-modal-photo [photoId]="photoDto.id" (closeModal)="closeModalInParent($event)" ></app-image-modal-photo>
+        <!-- <app-photo-card [photoElement]="photoDto"></app-photo-card> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card-body">
+  <!-- <img class="card-img-top" src="{{photoDto.url}}" alt="{{photoDto?.photoOwner.knownAs}}" title="{{photoDto?.photoOwner.knownAs}}"> -->
+</div>
+<!-- <div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">{{closeBtnName}}</button>
+</div> -->

@@ -1,0 +1,50 @@
+.card:hover img {
+  transform: scale(1.2, 1.2);
+  transition-duration: 500ms;
+  transition-timing-function: ease-out;
+  opacity: 0.7;
+}
+
+
+.card img {
+  transform: scale(1.0, 1.0);
+  transition-duration: 500ms;
+  transition-timing-function: ease-out;
+}
+
+.card-img-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.member-icons {
+  position: absolute;
+  bottom: -30%; /* this acts like a direction from wich the box will appers, + means it comes from above, - from bottom*/
+  left: 0;
+  right: 0;
+  margin-right: auto;
+  margin-left: auto;
+  opacity: 0; /* opacity to 0, gonna be hidden initially*/
+}
+/* this is the key poin ton how the three buttons emerge,
+whe I hover over the .card-img-wrapper, when in hover mode then activate opacity to the member-icons class */
+.card-img-wrapper:hover .member-icons {
+  bottom: 0;
+  opacity: 1;
+}
+
+/* this is for slidong up the buttons whwn we hover over the image */
+.animate {
+  transition: all 0.3s ease-in-out;
+}
+
+/* for the uer icon when user is online */
+@keyframes fa-blink {
+  0% {opacity: 1;}
+  100% {opacity: 0.4;}
+}
+
+.is-online {
+  animation: fa-blink 1.5s linear infinite;
+  color: rgb(1, 189, 42);
+}

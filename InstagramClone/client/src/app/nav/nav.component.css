@@ -1,0 +1,23 @@
+.dropdown-menu, .dropdown-item {
+  cursor: pointer;
+  background-color: rgb(123, 211, 233)
+}
+
+.dropdown-item:hover {
+  color: white
+}
+/*  I added this */
+.dropdown-toggle {
+  outline: none;
+  border: none;
+}
+/* // i added this */
+.logoutButton:hover {
+  color: red;
+}
+
+img {
+  max-height: 50px;
+  border: 2px solid #fff;
+  display: inline;
+}

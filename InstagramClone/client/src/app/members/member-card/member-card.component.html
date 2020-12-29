@@ -1,0 +1,42 @@
+<!-- here ill the card bootstrap component -->
+<div class="card container bg-gradient-dark mt-3 " style="width: 18rem">
+  <div class="card-img-wrapper">
+    <img class="card-img-top p-2" src="{{member.photoUrl || '../../../assets/default-user.png'}}"
+       alt="{{ member.knownAs }}" title="{{member.knownAs}}">
+    <ul class="list-inline member-icons animate text-center">
+      <li class="list-inline-item">
+        <button
+          type="button"
+          class="btn btn-primary mr-1"
+          (click)="selectMember()"
+          title="Details"><i class="fa fa-user"></i>
+         </button>
+         <!-- disable this button for already liked users, extra task -->
+        <button
+          *ngIf="showLikeButton === true"
+           type="button"
+           (click)="addLike(member)"
+           class="btn btn-primary mr-1"><i class="fa fa-heart"></i>
+          </button>
+        <button type="button" class="btn btn-primary"
+          [routerLink]="['/members', member.id]" [queryParams]="{tab: 3}">
+          <i class="fa fa-envelope"></i>
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card-body text-center">
+    <h5 class="card-title mb-1">
+      <span [class.is-online]="(presence.onlineUsers$ | async).includes(member.username)">
+        <i class="fa fa-user"></i>
+      </span>
+     &nbsp;{{member.username}}, {{member.age}}
+    </h5>
+    <p class="card-text text-muted mt-2"> <i class="fas fa-map-marker-alt"></i> &nbsp;
+      <i class="fa fa-map-marker" aria-hidden="true"></i> &nbsp; {{member.city}}</p>
+    <p class="card-text text-muted">{{member.introduction | slice:0:120}}...</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+
+  </div>
+</div>

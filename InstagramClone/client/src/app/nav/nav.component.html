@@ -1,0 +1,61 @@
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-primary d-block" style="position: fixed; z-index: 999; top: 0; width: 100%;"> -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container justify-content-between">
+    <a class="navbar-brand" [routerLink]="['']"> <i class="fa fa-instagram fa-lg" aria-hidden="true"></i> Instagram Clone</a>
+    <button class="navbar-toggler" type="button" (click)="toggleNavbar()">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" [ngClass]="{'show': navbarOpen}">
+      <ul class="navbar-nav mr-auto" >
+        <ng-container *ngIf="loggedIn">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/members']" [routerLinkActive]="['active']">
+              <i class="fa fa-users fa-lg" aria-hidden="true"></i>
+              Search Users
+            </a>
+          </li>
+
+        <li *appHasRole='["Admin","Moderator"]' class="nav-item">
+            <a class="nav-link" [routerLink]="['/admin']" [routerLinkActive]="['active']">Admin</a>
+          </li>
+        </ng-container>
+
+        <li  class="nav-item">
+          <a class="nav-link" [routerLink]="['/instagram-photos']"
+           [routerLinkActive]="['active']">
+           <i class="fa fa-camera-retro fa-lg"></i>
+           Instagram Photos</a>
+        </li>
+      </ul>
+
+      <div *ngIf="loggedIn" class="dropdown" dropdown>
+        <button class="btn btn-primary dropdown-toggle" dropdownToggle type="button">
+          {{username.charAt(0).toUpperCase() + username.slice(1)}}
+        </button>
+          <img class="img-circle rounded-circle ml-1" src="{{(mainPhoto$ | async)  || '../../../assets/default-user.png'}}" >
+        <div class="dropdown-menu mt-2" *dropdownMenu>
+          <a class="dropdown-item" [routerLink]="['/lists']"> My Circle</a>
+          <a class="dropdown-item" [routerLink]="['messages']">Messages</a>
+          <a class="dropdown-item" [routerLink]="['member/edit']">Edit Profile</a>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item logoutButton" (click)="logout()">Logout</button>
+        </div>
+      </div>
+
+      <form *ngIf="!loggedIn" class="form-inline my-2 my-lg-0 ml-auto" #loginForm="ngForm" (ngSubmit)="login()"
+        autocomplete="off">
+
+        <input class="form-control mr-sm-2" type="text" placeholder="Username" name="username"
+          [(ngModel)]="model.username">
+        <input class="form-control mr-sm-2" type="password" placeholder="Password" name="password"
+          [(ngModel)]="model.password">
+        <button class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
+      </form>
+
+
+
+    </div>
+  </div>
+
+</nav>

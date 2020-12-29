@@ -1,0 +1,65 @@
+<div *ngIf="member" class="container mt-4">
+  <!-- when done, ship thos two rows into seperate components -->
+  <div class="row">
+    <!-- <h2> User info</h2> -->
+    <div class="col-12 col-lg-2 justify-content-center">
+      <img class="rounded-circle img-responsive" src="{{member.photoUrl}}" alt="">
+    </div>
+    <div class="col-md-12 col-lg-10 p-0">
+      <div class="d-flex">
+        <h3 class="text-black-50 m-auto" style="text-align: center">{{member.username}}</h3>
+        <button class="btn btn-outline-info ml-2" type="button"
+        [routerLink]="['/members', member.id]" [queryParams]="{tab: 3}">Message</button>
+        <button class="btn btn-lg ml-2" type="button" title="follow"
+        (click)="followUser(member.username)"> <i class="fa fa-user-plus"></i> </button>
+      </div>
+      <div class="container">
+        <span>{{member.photosDto.length}} posts</span>
+        <span *ngIf="followers"> {{followers.length}} followers</span>
+        <span *ngIf="followingPeople"> {{followingPeople.length}} following </span>
+        <blockquote class="blockquote text-center">
+          <p class="mb-0">{{member.introduction | slice:0:120}}...</p>
+          <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="tab-panel">
+    <tabset #memberTabs class="member-tabset" [justified]="true">
+      <tab heading="About {{member.knownAs}}" >
+        <h4 class="text-success"> Description</h4>
+        <p> {{member.introduction}}</p>
+        <h4> Lookig for </h4>
+        <p> {{member.lookingFor}}</p>
+      </tab>
+      <tab heading="Interests">
+        <h4> Interests </h4>
+        <p> {{member.interests}}</p>
+      </tab>
+      <tab heading="Photos" (selectTab)="onSelect($event)">
+        <div *ngIf="loadPhotos" class="row justify-content-center bg-secondary mt-3">
+          <div *ngFor="let photo of member.photosDto">
+            <app-instagram-photo-card (reloadUsers)="reloadInstagramMember($event)"
+              [photo]="photo"
+              [showLikeButton]="true">
+            </app-instagram-photo-card>
+          </div>
+        </div>
+      </tab>
+      <tab *ngIf="localStorageUsername !== username" heading="Messages" (selectTab)="onSelect($event)">
+        <!-- child component -->
+        <!-- <app-messages></app-messages> -->
+        <app-member-messages *ngIf="true"
+            [recipientId]="member.id"
+            [recipientUsername]="member.username" >
+        </app-member-messages>
+      </tab>
+      <tab *ngIf="localStorageUsername === username" heading="All Messages" (selectTab)="onSelect($event)">
+        <app-messages></app-messages>
+      </tab>
+    </tabset>
+  </div>
+
+
+</div>

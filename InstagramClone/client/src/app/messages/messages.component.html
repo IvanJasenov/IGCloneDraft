@@ -1,0 +1,117 @@
+<div class="row mb-4">
+  <div class="btn-group container text-center mt-3">
+    <button class="btn btn-primary"
+          type="button"
+          name="container"
+          btnRadio="Unread"
+          [(ngModel)]="container"
+          (click)="loadMessages()">
+          <i class="fa fa-envelope mr-2"></i>Unread
+        </button>
+
+        <button class="btn btn-secondary ml-2"
+          type="button"
+          name="container"
+          btnRadio="Inbox"
+          [(ngModel)]="container"
+          (click)="loadMessages()">
+          <i class="fa fa-envelope-open mr-2"></i>Inbox
+        </button>
+
+        <button class="btn btn-info ml-2"
+          type="button"
+          name="container"
+          btnRadio="Outbox"
+          [(ngModel)]="container"
+          (click)="loadMessages()">
+          <i class="fa fa-paper-plane mr-2"></i>Outbox
+        </button>
+  </div>
+
+</div>
+
+
+<ng-container class="row">
+    <div class="row" *ngIf="messages?.length == 0">
+      <h3>There are no messages</h3>
+    </div>
+
+
+    <div class="row" *ngIf="messages?.length > 0">
+      <table class="table table-hover text-center" style="cursor: pointer">
+        <thead>
+          <tr>
+            <th style="width: 40%">Message</th>
+            <th style="width: 20%">From / To</th>
+            <th style="width: 20%">Sent / Recieved</th>
+            <th style="width: 20%">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+          <!-- the goal of this is on click of the table to take us to the user profile with who we chat -->
+          <tr (click)="navigateToProfile(container, message.recipientId, message.senderId)"
+             [hidden]="loadingProgress"
+             *ngFor="let message of messages">
+             <!-- this was inside the tr -->
+             <!-- routerLink='{{container === "Outbox" ? "/members/" + message.recipientId : "/members/" + message.senderId}}' [queryParams]="{tab: 3}" -->
+            <td>{{message.content}}</td>
+            <td>
+              <div *ngIf="container === 'Outbox'">
+                <img
+                  class="img-circle rounded-circle mr-2"
+                  src="{{message.recipientPhotoUrl}}" alt="{{message.recipientUsername}}">
+                  <strong>{{message.recipientUsername | titlecase}}</strong>
+              </div>
+              <div *ngIf="container === 'Inbox'">
+                <img
+                  class="img-circle rounded-circle mr-2"
+                  src="{{message.senderPhotoUrl}}" alt="{{message.senderUsername}}">
+                  <strong>{{message.senderUsername | titlecase}}</strong>
+              </div>
+            </td>
+            <td>{{message.dateSend | timeAgo }}</td>
+            <td>
+              <!--  this is neat, stopPropagation() so the upper click event on tr wont occure -->
+              <button class="btn btn-danger" (click)="$event.stopPropagation()" (click)="showChildModal(message.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+
+
+      </table>
+    </div>
+
+    <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1"
+          role="dialog" aria-labelledby="dialog-child-name">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 id="dialog-child-name" class="modal-title pull-left">Delete message</h4>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete this message
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button class="btn btn-success" (click)="deleteMessage()">  Confirm</button>
+                <button class="btn btn-danger" (click)="hideChildModal()" > Cancel</button>
+            </div>
+          </div>
+         </div>
+    </div>
+
+    <pagination *ngIf="pagination && messages.length > 0"  class="container justify-content-center mt-3 pagination" [boundaryLinks]="true"
+      [totalItems]="pagination.totalItems"
+      [itemsPerPage]="pagination.itemsPerPage"
+      [(ngModel)]="pageNumber"
+      (pageChanged)="pageChanged($event)"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
+      lastText="&raquo;">
+    </pagination>
+
+  </ng-container>
+

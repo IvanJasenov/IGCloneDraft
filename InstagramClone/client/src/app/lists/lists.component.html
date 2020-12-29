@@ -1,0 +1,24 @@
+<h2 class="text-center mt-3">{{predicates === 'liked' ? 'Members I like': 'Members who liked me'}}</h2>
+
+
+<div class="btn-group d-block text-center">
+  <button class="btn btn-info"
+    type="button"
+    name="predicates"
+    btnRadio="liked"
+    [(ngModel)]="predicates"
+    (click)="loadLikes()">Members I LIke</button>
+  <button class="btn btn-info ml-2"
+    type="button"
+    name="predicates"
+    btnRadio="likedBy"
+    [(ngModel)]="predicates"
+    (click)="loadLikes()">Liked By</button>
+</div>
+
+<h2 class="text-center text-danger" *ngIf="members?.length == 0">No one liked you</h2>
+
+<div *ngFor="let member of members">
+  <app-member-card [member]="member" [showLikeButton]="false"></app-member-card>
+</div>
+

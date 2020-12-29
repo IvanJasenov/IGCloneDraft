@@ -1,0 +1,42 @@
+<p>photo-management works!</p>
+<div class="row">
+  <div class="col-12 col-md-4 card-body text-center img-wrapper"
+    *ngFor="let photo of unapprovedPhotos">
+    <h3>{{photo.username}}</h3>
+    <div class="text-block text-danger px-1">
+      <h1>Awaiting Approval</h1>
+    </div>
+
+  <img class="img-thumbnail" src="{{photo.url || './assets/user.png'}}">
+  <div class="text-center justify-content-between">
+    <button
+      [disabled]="photo.isMain"
+      [ngClass]="['photo.isMain' ? 'btn btn-success active' : 'btn-outline-success']"
+      class="btn-sm btn-success mr-2"
+      (click)="aprovePhoto(photo.id)">Approve
+    </button>
+    <button
+    [disabled]="photo.isMain"
+    class="btn-sm btn-danger"
+     (click)="openModal(template, photo.id)">Delete <i class="fa fa-trash-o"></i>
+    </button>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Delete Photo</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="deleteModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Delete this photo?
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-success" (click)="deletePhoto()">  Confirm</button>
+    <button class="btn btn-danger" (click)="hideChildModal()" > Cancel</button>
+</div>
+</ng-template>
+
+</div>

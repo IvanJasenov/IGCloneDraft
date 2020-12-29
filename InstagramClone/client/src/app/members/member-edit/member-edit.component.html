@@ -1,0 +1,97 @@
+<div class="container mt-6" *ngIf="member">
+  <div class="row" *ngIf="member">
+
+    <div class="col-4">
+      <h1>Your Profile</h1>
+    </div>
+    <div class="col-8">
+      <div *ngIf="madeChanges" class="alert alert-info">
+        <strong>Information:</strong>You have makde changes. Any unsaved changes will be lost
+      </div>
+    </div>
+
+    <div class="col-8 offset-2 offset-sm-0 col-sm-6 col-md-6 col-lg-5 shadow-lg p-3 mb-2 bg-white rounded">
+      <h1>{{member.username}}</h1>
+      <p class="lead">General Information about the member</p>
+      <div class="card shadow-lg p-3 mb-2 bg-white rounded">
+        <img class="card-img-top img-thumbnail" src="{{member?.photoUrl || '../../../assets/default-user.png'}}" alt="{{member?.knownAs}}">
+      </div>
+
+      <div class="card-body">
+        <div class="text-center">
+          <i class="fas fa-map-marker-alt"></i> &nbsp; <span> {{member?.city}}, {{member?.country}}</span> <br>
+          <strong>Age:</strong><span> {{member.age}}</span> <br>
+          <strong>Last Active:</strong><span> {{member.lastActive | timeAgo}}</span> <br>
+          <strong>Member Since:</strong><span> {{member.dateCreated | date: 'dd MMM yyyy' }}</span> <br>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn btn-success btn-block"
+        [disabled]="!introductionChange && !lookingForChange && !interestsChange"
+         form="editForm">Save Changes
+        </button>
+      </div>
+
+    </div>
+    <!-- tabbs -->
+    <div class="col-8 m-auto m-sm-0 col-sm-6 col-md-6 col-lg-7 shadow-lg p-3 mb-2 bg-white rounded">
+      <p> Photo galery and info</p>
+      <div class="tab-panel">
+        <tabset #memberTabs class="member-tabset">
+          <tab heading="About {{member.knownAs}}">
+
+            <form class="form-group" #editForm="ngForm" id="editForm" (ngSubmit)="updateMember()">
+              <h4> Description</h4>
+              <textarea class="form-control" name="introduction" rows="6"
+               [(ngModel)]="member.introduction"
+               (ngModelChange)="detectInputChange($event, 'introduction')">
+              </textarea>
+              <button type="button" *ngIf="introductionChange" class="btn btn-sm btn-danger" (click)="cancelChanges('introduction')">Cancel Changes</button>
+
+              <h4 class="mt-2"> Looking for </h4>
+              <textarea class="form-control" name="lookingFor" rows="6"
+                [(ngModel)]="member.lookingFor"
+                (ngModelChange)="detectInputChange($event, 'lookingFor')">
+              </textarea>
+              <button type="button" *ngIf="lookingForChange" class="btn btn-sm btn-danger" (click)="cancelChanges('lookingFor')">Cancel Changes</button>
+
+              <h4 class="mt-2"> Interests </h4>
+              <textarea class="form-control" name="interests" rows="6"
+                [(ngModel)]="member.interests"
+                (ngModelChange)="detectInputChange($event, 'interests')">
+              </textarea>
+              <button type="button" *ngIf="interestsChange" class="btn btn-sm btn-danger" (click)="cancelChanges('interests')">Cancel Changes</button>
+
+              <h4 class="mt-2">Location Details(detect changes not captured yet)</h4>
+              <div class="form-inline mt-2 justify-content-between">
+                <label for="city">City: </label>
+                <input type="text" class="form-control ml-1  w-25" name="city"
+                 [(ngModel)]="member.city"
+                 #city="ngModel"
+                 (ngModelChange)="detectInputChange($event, 'city')">
+                <label for="country ml-1">Country: </label>
+                <input type="text" class="form-control ml-1 w-25" name="country"
+                 [(ngModel)]="member.country"
+                 #country="ngModel"
+                 (ngModelChange)="detectInputChange($event, 'city')">
+              </div>
+
+              <!-- <button type="button" *ngIf="city.dirty" class="btn btn-sm btn-danger" (click)="cancelChanges('city')">Cancel Changes</button> -->
+
+            </form>
+
+          </tab>
+
+          <tab heading="Edit Photos">
+            <app-photo-editor [member]="member"></app-photo-editor>
+          </tab>
+
+        </tabset>
+      </div>
+
+    </div>
+  </div>
+
+
+</div>

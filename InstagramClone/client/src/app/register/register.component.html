@@ -1,0 +1,49 @@
+ <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
+  <h2 class="text-center text-primary">Sign up</h2>
+  <hr>
+
+  <app-text-input [formControl]='registerForm.controls["username"]' [label]='"Username"'></app-text-input>
+
+  <!-- for radio button -->
+  <div class="form-group">
+    <label class="form-label" style="margin-right: 10px">I am a: </label>
+    <label class="radio-inline">
+      <input type="radio" value="male" formControlName='gender'> Male
+    </label>
+    <label class="radio-inline ml-3">
+      <input type="radio" value="female" formControlName='gender'> Female
+    </label>
+  </div>
+
+  <app-text-input [formControl]='registerForm.controls["knownAs"]' [label]='"Known As"'></app-text-input>
+  <app-date-inputs [formControl]='registerForm.controls["dateOfBirth"]' [maxDate]='maxDate' [label]='"Date Of Birth"'></app-date-inputs>
+  <app-text-input [formControl]='registerForm.controls["city"]' [label]='"City"'></app-text-input>
+  <app-text-input [formControl]='registerForm.controls["country"]' [label]='"Country"'></app-text-input>
+
+
+  <app-text-input [formControl]='registerForm.controls["password"]' [type]='"password"' [label]='"Password"'></app-text-input>
+
+  <!-- for the confirm password, I left it this way because the lecture solution showed some stupid error on ':' in ternary condition -->
+  <ng-container *ngIf="!registerForm.get('username').errors && !registerForm.get('password').errors">
+    <label for="confirmPassword">Confirm Password</label>
+      <div class="form-group">
+        <input type="password" class="form-control"
+          formControlName="confirmPassword"
+          placeholder=""
+          autocomplete="off"
+          [ngClass]="{'is-invalid': registerForm.get('confirmPassword').dirty &&  registerForm.hasError('mismatched')}">
+          <span class="invalid-feedback">Confirm password does not match with entered password</span>
+      </div>
+  </ng-container>
+
+
+
+  <div class="form-group text-center">
+    <button class="btn btn-success mr-2" type="submit" [disabled]="!registerForm.valid" >Register</button>
+    <button class="btn btn-info" (click)="cancel()">Cancel</button>
+  </div>
+</form>
+
+<!-- printing out the form when in development -->
+<p>Form Value : {{registerForm.value | json}}</p>
+<p>Form Status : {{registerForm.status | json}}</p>
