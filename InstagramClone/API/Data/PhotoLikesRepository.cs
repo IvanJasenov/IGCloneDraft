@@ -22,7 +22,7 @@ namespace API.Data
         public async Task<List<PhotoLikes>> GetPhotoLikesByPhotoId(int photoId)
         {
             var photoLikes = await _dataContext.PhotoLikes
-                                                .Include(p => p.AppUser)
+                                                .Include(p => p.AppUser).ThenInclude(u => u.Photos)
                                                 .Where(el => el.PhotoId == photoId)
                                                 .ToListAsync();
       

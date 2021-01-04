@@ -189,7 +189,7 @@ namespace API.Services
 
         public async Task<List<PhotoLikeDto>> GetLikesByPhotoId(int photoId)
         {
-            var likes = await _unitOfWork.PhotoLikesRepository.GetPhotoLikesByPhotoId(photoId);
+            List<PhotoLikes> likes = await _unitOfWork.PhotoLikesRepository.GetPhotoLikesByPhotoId(photoId);
             List<PhotoLikeDto> PhotoLikeDto = _mapper.Map<List<PhotoLikes>, List<PhotoLikeDto>>(likes);
 
             return PhotoLikeDto;

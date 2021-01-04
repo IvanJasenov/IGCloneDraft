@@ -59,10 +59,6 @@ namespace API.Data
 
         public async Task<Photo> GetPhotoComments(int photoId)
         {
-            // this is very neat, I made this. Keep an eye on how the flow is done.
-            // how i include Photo owner and then include its photos but juts the main photo
-            // also for the photo comments creators i do the same
-            // and then in PhotoMapping profiles I do CreateMap<PhCommentCreator, PhCommentCreatorDto>() which is also neat
             var phComments = await _dataContext.Photos.IgnoreQueryFilters()
                                                         .Where(p => p.Id == photoId)
                                                         .Include(el => el.AppUser).ThenInclude(p => p.Photos.Where(el => el.IsMain)) // include the photo owner
