@@ -52,7 +52,7 @@ namespace API
             {
                 option.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4205");
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4209");
                 });
             });
         }
@@ -79,7 +79,7 @@ namespace API
                 x.AllowAnyHeader()
                  .AllowAnyMethod()
                  .AllowCredentials()
-                 .WithOrigins("https://localhost:4200"));
+                 .WithOrigins("https://localhost:4209"));
 
             // add Authentication middleware for tokens, add this at the same time with services.AddAuthentication
             // ordering i simportant, need to come before UseAuthorizatio
