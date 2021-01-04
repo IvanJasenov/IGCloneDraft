@@ -37,9 +37,14 @@ export class PhotosService {
     return this.http.put(this.baseUrl + 'photo/edit-photo-comment/' + photoId, commentObject);
   }
 
+  // obsolete
   getNumberOfLikesPerPhoto(photoId: number) {
     this.http.get(this.baseUrl + 'photo/get-photo-likes-by-photoId/' + photoId).subscribe((res: photoLikesDto[]) => {
       this.photoLikes.next(res);
     }, error => console.log('error:', error));
+  }
+
+  getLikesForPhotoId(photoId: number) {
+    return this.http.get<photoLikesDto[]>(this.baseUrl + 'photo/get-photo-likes-by-photoId/' + photoId);
   }
 }

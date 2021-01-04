@@ -34,6 +34,7 @@ export class PhotoCardComponent implements OnInit {
   editMode: boolean = false;
   numberOfLikesPerPhoto: number;
   photoLikesDto: photoLikesDto[] = [];
+  showLikesData = false;
 
   constructor(private router: Router, private photoService: PhotosService, private accountService: AccountService,
     private alertify: AlertifyService, private modalService: BsModalService) {
@@ -56,8 +57,7 @@ export class PhotoCardComponent implements OnInit {
    }
 
   ngOnInit() {
-    // console.log('username:', this.currentUsername);
-    this.numberOfLikes(this.photoElement.id);
+    this.showAllLikes(this.photoElement.id);
   }
 
 
@@ -129,7 +129,7 @@ export class PhotoCardComponent implements OnInit {
       if (res !== null) {
         // fire up the emiter
         this.accountService.getLikedPhotosByUser();
-        this.photoService.getNumberOfLikesPerPhoto(photoId);
+        this.showAllLikes(this.photoElement.id);
         this.alertify.success('Liked a photo');
       }
     }, error => console.log('error:', error));
@@ -141,7 +141,7 @@ export class PhotoCardComponent implements OnInit {
       if (res) {
         // fire up the emiter
         this.accountService.getLikedPhotosByUser();
-        this.photoService.getNumberOfLikesPerPhoto(photoId);
+        this.showAllLikes(this.photoElement.id);
         this.alertify.error('Unliked photo');
       }
     }, error => console.log('error:', error));
@@ -197,5 +197,18 @@ export class PhotoCardComponent implements OnInit {
       }
     }, error => console.log('error:', error))
   }
+
+  showAllLikes(photoId: number) {
+    console.log('Likes Objects for photoId:', photoId);
+    const photoLikesUsers = this.photoService.getLikesForPhotoId(photoId).subscribe((res: photoLikesDto[]) => {
+      if (res) {
+        this.photoLikesDto = res; // jus assign
+        console.log('photo likes(users):', this.photoLikesDto);
+        this.numberOfLikesPerPhoto = this.photoLikesDto.length;
+        this.showLikesData = true;
+      }
+    }, error => console.log('error:', error));
+  }
+
 
 }

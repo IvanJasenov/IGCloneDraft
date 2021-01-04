@@ -24,9 +24,11 @@
   <div class="card-body">
     <img class="card-img-top" src="{{photoElement.url}}" alt="{{photoElement?.photoOwner.knownAs}}" title="{{photoElement?.photoOwner.knownAs}}">
     <div *ngIf="likedPhtosIds" class="mt-2">
-       <i *ngIf="!canBeLiked(photoElement.id)" (click)="likePhoto(+photoElement.id)" class="fa fa-heart-o fa-lg"></i>
-       <i *ngIf="canBeLiked(photoElement.id)" (click)="deletePhotoLike(+photoElement.id)" class="fa fa-heart fa-lg"></i>
-       <span> {{numberOfLikesPerPhoto}} likes</span>
+       <i *ngIf="!canBeLiked(photoElement.id)" (click)="likePhoto(+photoElement.id)" class="fa fa-heart-o fa-2x"></i>
+       <i *ngIf="canBeLiked(photoElement.id)" (click)="deletePhotoLike(+photoElement.id)" class="fa fa-heart fa-2x" style="color:red"></i>
+       <span *ngIf="true" class="h4 text-black" tooltip="Show All Likes" (click)=showAllLikes(photoElement.id) >
+        <strong> {{numberOfLikesPerPhoto}} likes </strong>
+    </span>
     </div>
 
 
