@@ -94,7 +94,8 @@ import { PhotoLikesModalComponent } from './modals/photo-likes-modal/photo-likes
   entryComponents: [
     RolesModalComponent,
     ConfirmDialogComponent,
-    InstagramImageModalComponent
+    InstagramImageModalComponent,
+    PhotoLikesModalComponent
   ],
   bootstrap: [AppComponent]
 })

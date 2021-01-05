@@ -1,1 +1,35 @@
-<p>photo-likes-modal works!</p>
+<div *ngIf="photoLikesDto">
+  <div class="modal-header">
+  <h4 class="modal-title ml-auto text-black">Likes</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()" tooltip="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+</div>
+
+
+<div class="card-body" style="width: auto">
+
+  <cdk-virtual-scroll-viewport itemSize="10" class="example-viewport text-center" style="position: relative;">
+    <div *cdkVirtualFor="let item of photoLikesDto" class="example-item my-2">
+      <div class="container row">
+        <div class="col-2">
+         <img class="rounded-circle img-responsive" src="{{item.userDto.photoUrl || '../../../assets/default-user.png'}}"
+            alt="{{item.userDto.knownAs}}"  (click)="navigateToUser(item.userDto.username)">
+          </div>
+          <div class="col-5 mt-2">
+            <span
+              class="btn-link text-black"
+              (click)="navigateToUser(item.userDto.username)"
+              style="cursor: pointer">{{item.userDto.username}}
+            </span>
+            <p class="text-muted"> {{item.userDto.knownAs}} </p>
+          </div>
+
+      </div>
+    </div>
+ </cdk-virtual-scroll-viewport>
+
+</div>
+
+</div>
+

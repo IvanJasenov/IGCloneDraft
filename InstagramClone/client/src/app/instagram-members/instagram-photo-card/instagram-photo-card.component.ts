@@ -51,22 +51,11 @@ export class InstagramPhotoCardComponent implements OnInit {
   showModal(photoId: number) {
     console.log('show modal for photoId: ' + photoId);
     const initialState = {
-      list: [
-        'Open a modal with component',
-        'Pass your data',
-        'Do something else',
-        '...'
-      ],
       class: 'modal-dialog-centered modal-dialog modal-lg',
       photoDto: this.photo,
       title: 'Modal with component'
     };
-    const config = {
-      class: 'modal-dialog-centered modal-dialog modal-lg',
-      initialState: {
-        photoDto: this.photo
-      }
-    };
+
     this.bsModalRef = this.modalService.show(InstagramImageModalComponent,
                                               Object.assign({initialState}, { class: 'modal-dialog-centered modal-dialog modal-xl' }));
     this.bsModalRef.content.reloadComponent.subscribe(res => {
@@ -91,5 +80,6 @@ export class InstagramPhotoCardComponent implements OnInit {
       }
     }, error => console.log('error:', error))
   }
+
 
 }

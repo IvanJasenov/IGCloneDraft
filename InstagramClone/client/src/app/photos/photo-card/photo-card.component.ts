@@ -11,6 +11,7 @@ import { AlertifyService } from 'src/app/_services/alertify.service';
 import { User } from 'src/app/_models/user';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PhotoCommentObject } from 'src/app/_models/InstagramPhotos/photoComment';
+import { PhotoLikesModalComponent } from 'src/app/modals/photo-likes-modal/photo-likes-modal.component';
 
 @Component({
   selector: 'app-photo-card',
@@ -35,6 +36,7 @@ export class PhotoCardComponent implements OnInit {
   numberOfLikesPerPhoto: number;
   photoLikesDto: photoLikesDto[] = [];
   showLikesData = false;
+  bsModalRef: BsModalRef;
 
   constructor(private router: Router, private photoService: PhotosService, private accountService: AccountService,
     private alertify: AlertifyService, private modalService: BsModalService) {
@@ -208,6 +210,21 @@ export class PhotoCardComponent implements OnInit {
         this.showLikesData = true;
       }
     }, error => console.log('error:', error));
+  }
+
+  showLikesModal() {
+    console.log('photo likes(users):', this.photoLikesDto);
+    const initialState = {
+      class: 'modal-dialog-centered modal-dialog modal-lg',
+      photoLikesDto: this.photoLikesDto,
+      title: 'Likes'
+    };
+
+    this.bsModalRef = this.modalService.show(PhotoLikesModalComponent,
+        Object.assign({initialState}, { class: 'modal-dialog-centered modal-dialog modal-md'}));
+
+    this.bsModalRef.content.closeBtnName = 'Close';
+
   }
 
 
