@@ -40,6 +40,7 @@ import { InstagramImageModalComponent } from './modals/instagram-image-modal/ins
 import { ImageModalPhotoComponent } from './instagram-members/image-modal-photo/image-modal-photo.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { FormsModule } from '@angular/forms';
+import { PhotoLikesModalComponent } from './modals/photo-likes-modal/photo-likes-modal.component';
 
 
 @NgModule({
@@ -73,7 +74,8 @@ import { FormsModule } from '@angular/forms';
     InstagramMemberEditComponent,
     InstagramPhotoCardComponent,
     InstagramImageModalComponent,
-    ImageModalPhotoComponent
+    ImageModalPhotoComponent,
+    PhotoLikesModalComponent
   ],
   imports: [
     SharedModule,

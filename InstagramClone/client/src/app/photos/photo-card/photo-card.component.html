@@ -27,7 +27,8 @@
        <i *ngIf="!canBeLiked(photoElement.id)" (click)="likePhoto(+photoElement.id)" class="fa fa-heart-o fa-2x"></i>
        <i *ngIf="canBeLiked(photoElement.id)" (click)="deletePhotoLike(+photoElement.id)" class="fa fa-heart fa-2x" style="color:red"></i>
        <div class="mt-2" style="cursor: pointer">
-        <span *ngIf="showLikesData" class="h4 text-black" tooltip="Show All Likes" (click)=showAllLikes(photoElement.id) >
+        <span *ngIf="showLikesData" class="h4 text-black" tooltip="Show All Likes" placement="right"
+           (click)=showAllLikes(photoElement.id) >
             <strong> {{numberOfLikesPerPhoto}} likes </strong>
         </span>
 
@@ -92,7 +93,7 @@
                 <i *ngIf="comment.commentCreator.username === currentUsername" class="fa fa-trash fa-lg" aria-hidden="true"></i>
               </button>
               <button class="btn" style="display:inline;" type="button"
-                tooltip="Edit Comment"
+                tooltip="Edit Comment" placement="right"
                 (click)="editComment(comment.comment, photoElement.id)">
                 <i *ngIf="comment.commentCreator.username === currentUsername" class="fa fa-pencil" aria-hidden="true"></i>
               </button>
