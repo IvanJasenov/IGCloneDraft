@@ -84,6 +84,10 @@ export class MembersService {
     return this.http.post(this.baseUrl + 'likes/' + username, {});
   }
 
+  deleteLike(username: string) {
+    return this.http.delete(this.baseUrl + 'likes/deleteLike/' + username);
+  }
+
   getLikes(predicates: string) {
     return this.http.get(this.baseUrl + 'likes?predicates=' + predicates);
   }

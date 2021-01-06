@@ -18,7 +18,16 @@ export class ListsComponent implements OnInit {
   canUnlikeMembers = false;
 
 
-  constructor(private memeberService: MembersService, private router: Router, private accountService: AccountService) { }
+  constructor(private memeberService: MembersService, private router: Router, private accountService: AccountService) {
+    // listen for changes
+    this.accountService.likedUsersByLogedInUser$.subscribe((res: LikeDto[]) => {
+      if (res) {
+        this.likedUsersByLogedInUser = res;
+        this.loadLikes();
+        console.log('Users I follow after change:', res);
+      }
+    }, error => console.log('error:', error));
+   }
 
   ngOnInit() {
     this.loadLikes();
