@@ -61,6 +61,23 @@ namespace API.Controllers
             return BadRequest("Failed to like user");
         }
 
+        [HttpDelete("deleteLike/{username}")]
+        public async Task<ActionResult> DeleteLike(string username)
+        {
+            int sourceUserId = HttpContext.GetUserId();
+            AppUser likedUser = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
+            int likedUserId = likedUser.Id;
+            AppUser sourceUser = await _unitOfWork.LikesRepository.GetUserWithLikes(sourceUserId);
+            // delete
+            UserLike userLike = await _unitOfWork.LikesRepository.GetUserLike(sourceUserId, likedUserId);
+            sourceUser.LikedUsers.Remove(userLike);
+            if (await _unitOfWork.Complete())
+            {
+                return Ok(new { succes = true });
+            }
+            return BadRequest(new { success = false });
+        }
+
         // {{url}}/likes?predicates=liked
         // {{url}}/likes?predicates=likedBy
         [HttpGet]
