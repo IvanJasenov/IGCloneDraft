@@ -184,7 +184,6 @@ export class ImageModalPhotoComponent implements OnInit {
     this.photoCommentForEditOriginal = comment;
     this.photoComment = comment;
     this.editMode = true;
-    this.closeModal.emit(true);
   }
 
   cancelEdit() {
