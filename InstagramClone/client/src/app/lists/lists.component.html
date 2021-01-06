@@ -19,6 +19,10 @@
 <h2 class="text-center text-danger" *ngIf="members?.length == 0">No one liked you</h2>
 
 <div *ngFor="let member of members">
-  <app-member-card [member]="member" [showLikeButton]="false"></app-member-card>
+  <app-member-card
+    [member]="member"
+    [showLikeButton]="false"
+    [canUnlikeMember]="canUnlikeMembers">
+  </app-member-card>
 </div>
 

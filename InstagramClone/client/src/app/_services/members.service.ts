@@ -31,36 +31,7 @@ export class MembersService {
 
     return getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http);
   }
-  // those two private methods will be in a separate file because Ill need pagination for other data as well
-  // for messages
-  // private getPaginatedResult<T>(url, params) {
-  //   const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>();
 
-  //   return this.http
-  //     .get<T>(url, { observe: 'response', params })
-  //     .pipe(
-  //       map((response) => {
-  //         paginatedResult.result = response.body;
-  //         // if there is a header
-  //         if (response.headers.get('Pagination') !== null) {
-  //           paginatedResult.pagination = JSON.parse(
-  //             response.headers.get('Pagination')
-  //           );
-  //         }
-  //         // this means return the paginatedResult which is of type PaginatedResult<T> as observable
-  //         return paginatedResult;
-  //       })
-  //     );
-  // }
-
-  // private getPaginationHeaders(pageNumber: number, itemsPerPage: number) {
-  //   let params = new HttpParams();
-  //   // set up the query params
-  //   params = params.append('pageNumber', pageNumber.toString());
-  //   params = params.append('itemsPerPage', itemsPerPage.toString());
-
-  //   return params;
-  // }
 
   getMemberById(id: number) {
     const member = this.members.find((m) => m.id === +id);

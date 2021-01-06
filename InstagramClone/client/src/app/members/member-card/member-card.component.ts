@@ -14,6 +14,7 @@ export class MemberCardComponent implements OnInit {
 
   @Input() member: Member;
   @Input() showLikeButton: boolean;
+  @Input() canUnlikeMember: boolean;
   constructor(private router: Router, private memberService: MembersService,
               private alertify: AlertifyService, private presence: PresenceService) { }
 
@@ -35,5 +36,9 @@ export class MemberCardComponent implements OnInit {
       console.log('res:', res);
       this.alertify.success('You liked user:' + member.knownAs);
     }, error => console.log('error:', error));
+  }
+
+  removeLike() {
+    console.log('remove like for memeber:', this.member);
   }
 }

@@ -6,6 +6,13 @@
     <ul class="list-inline member-icons animate text-center">
       <li class="list-inline-item">
         <button
+        *ngIf="canUnlikeMember"
+        type="button"
+        class="btn btn-primary mr-1"
+        (click)="removeLike()"
+        title="Unlike User"><i class="fa fa-user-times" aria-hidden="true"></i>
+     </button>
+        <button
           type="button"
           class="btn btn-primary mr-1"
           (click)="selectMember()"
