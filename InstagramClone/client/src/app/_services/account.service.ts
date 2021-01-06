@@ -4,6 +4,7 @@ import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import {map} from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { likedPhotosByUser } from '../_models/InstagramPhotos/likedPhotosByUser';
+import { LikeDto } from '../_models/InstagramPhotos/likesDto';
 import { User } from '../_models/user';
 import { PresenceService } from './presence.service';
 
@@ -25,6 +26,9 @@ export class AccountService {
   private likedPhotosByLogedInUser = new BehaviorSubject<number[]>(null);
   likedPhotosByLogedInUser$ = this.likedPhotosByLogedInUser.asObservable();
 
+  private likedUsersByLogedInUser = new BehaviorSubject<LikeDto[]>(null);
+  likedUsersByLogedInUser$ = this.likedUsersByLogedInUser.asObservable();
+
   constructor(private http: HttpClient, private presence: PresenceService) { }
 
   login(model: any) {
@@ -34,7 +38,10 @@ export class AccountService {
         if (user) {
           this.setCurrentUser(user);
           this.presence.createHubConnection(user);
-          this.getLikedPhotosByUser();
+          setTimeout(() => {
+            this.getLikedPhotosByUser();
+            this.getLikedUsersByLogedinUser();
+          }, 400);
         }
         // return from the observable so in nav,component line 48 can see the result
         return response;
@@ -115,6 +122,14 @@ setCurrentUser(user: User) {
 
   deletePhotoLike(photoId: number) {
     return this.http.delete(this.baseUrl + 'photo/delete-photo-like?photoId=' + photoId);
+  }
+
+  getLikedUsersByLogedinUser() {
+    this.http.get<LikeDto[]>(this.baseUrl + 'likes?predicates=liked').pipe(
+      map((res: LikeDto[]) => {
+        this.likedUsersByLogedInUser.next(res);
+      })
+    ).subscribe();
   }
 
 }

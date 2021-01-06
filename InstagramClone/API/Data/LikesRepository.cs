@@ -23,9 +23,7 @@ namespace API.Data
 
         public async Task<UserLike> GetUserLike(int sourceId, int likedUserId)
         {
-            // can use two properties becasuse the PK is combination of two keys
-            // have to explicitly set the FirstOrDefaulAsync for the liker and likee like in previpus version
-            // lecture solution does not work
+        
             return await _context.Likes.FirstOrDefaultAsync(item => item.SourceUserId == sourceId && item.LikedUserId == likedUserId);
         }
 

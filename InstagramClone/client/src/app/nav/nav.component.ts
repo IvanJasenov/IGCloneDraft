@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { LikeDto } from '../_models/InstagramPhotos/likesDto';
 import { User } from '../_models/user';
 import { AccountService } from '../_services/account.service';
 import { AlertifyService } from '../_services/alertify.service';
@@ -25,6 +26,7 @@ export class NavComponent implements OnInit {
 
   mainPhotoUrl: string;
   mainPhoto$: Observable<string>;
+  likedUsersByLogedInUser: LikeDto[] = [];
 
   ngOnInit() {
     // persisting the user from localStorage
@@ -51,6 +53,7 @@ export class NavComponent implements OnInit {
     this.accountService.login(this.model).subscribe(res => {
       console.log('res login:', res);
       this.loggedIn = true;
+      this.getLikedUsers();
       // navigate to memebers once when logged in
       this.router.navigate(['instagram-photos']);
       this.alertify.success('You\'re now logged in');
@@ -86,6 +89,15 @@ export class NavComponent implements OnInit {
 
   menuDropdown() {
     // this.displayMenu = !this.displayMenu;
+  }
+
+  getLikedUsers() {
+    this.accountService.likedUsersByLogedInUser$.subscribe((res: LikeDto[]) => {
+      if (res) {
+        this.likedUsersByLogedInUser = res;
+        console.log('Users I Like:', this.likedUsersByLogedInUser);
+      }
+    });
   }
 
 }

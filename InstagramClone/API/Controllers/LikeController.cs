@@ -66,10 +66,8 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LikeDto>>> GetUserLikes([FromQuery] LikesParams likesParams)
         {
-            // this is mne work, i get the id of the current user and pass it to the likesParams
             var userId = HttpContext.GetUserId();
             likesParams.UserId = userId;
-            //
             var userLikes = await _unitOfWork.LikesRepository.GetUserLikes(likesParams);
             if (userLikes == null)
             {
