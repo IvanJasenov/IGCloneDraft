@@ -73,7 +73,7 @@ namespace API.Controllers
             sourceUser.LikedUsers.Remove(userLike);
             if (await _unitOfWork.Complete())
             {
-                return Ok(new { succes = true });
+                return Ok(new { success = true });
             }
             return BadRequest(new { success = false });
         }
