@@ -56,13 +56,23 @@
       <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
     </div>
   </ng-template>
-  <div *ngIf="likedPhotosIds" class="row text-align-left ml-2 my-auto">
-    <i *ngIf="!canBeLiked(photoId)" (click)="likePhoto(+photoId)" class="fa fa-heart-o fa-lg"></i>
-    <i *ngIf="canBeLiked(photoId)" (click)="deletePhotoLike(+photoId)" class="fa fa-heart fa-lg"></i>
-    <span class="ml-1"> {{numberOfLikesPerPhoto}} likes</span>
-    <!-- <i  (click)="likePhoto(photoId)" class="fa fa-heart-o fa-lg"></i>
-    <i  (click)="deletePhotoLike(photoId)" class="fa fa-heart fa-lg"></i> -->
-  </div>
+  <div *ngIf="likedPhotosIds" class="text-align-left ml-2 my-auto">
+    <div class="row mb-2 my-auto" style="cursor: pointer">
+      <i *ngIf="!canBeLiked(photoId)" (click)="likePhoto(+photoId)" class="fa fa-heart-o fa-lg"></i>
+      <i *ngIf="canBeLiked(photoId)" (click)="deletePhotoLike(+photoId)" class="fa fa-heart fa-lg"
+        style="color:red"></i>
+
+
+        <span *ngIf="true" class="text-black text-center" tooltip="Show All Likes" placement="right"
+          (click)="showLikesModal()">
+          <span class="h5 text-dark ml-2 mt-auto d-inline"> {{numberOfLikesPerPhoto}} likes </span>
+        </span>
+      </div>
+
+      <div></div>
+
+
+
    <form #photoCommentForm="ngForm" (ngSubmit)="createComment()"><hr>
     <div class="input-group mb-3">
       <input type="text" class="form-control" style="border: transparent"
