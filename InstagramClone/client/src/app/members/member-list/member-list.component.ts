@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
+import { LikeDto } from 'src/app/_models/InstagramPhotos/likesDto';
 import { Member } from 'src/app/_models/member';
 import { IPagination, PaginatedResult } from 'src/app/_models/pagination';
 import { User } from 'src/app/_models/user';
@@ -23,6 +24,8 @@ export class MemberListComponent implements OnInit {
   userParams: UserParams;
   user: User;
   genderList = [{value: 'male', displayName: 'Male'}, {value: 'female', displayName: 'Female'}];
+  likedUsersByLogedInUser: LikeDto[] = [];
+  likedUserNames: string[] = [];
 
   constructor(private memberService: MembersService, private accountService: AccountService) {
     // takes the current user in the ctor
@@ -30,10 +33,26 @@ export class MemberListComponent implements OnInit {
       this.user = user;
       this.userParams = new UserParams(user);
     });
+
+    this.accountService.likedUsersByLogedInUser$.subscribe((res: LikeDto[]) => {
+      if (res) {
+        this.likedUsersByLogedInUser = res;
+        console.log('Users I follow:', res);
+        // clean list
+        this.likedUserNames = [];
+        this.likedUsersByLogedInUser.forEach(el => {
+          if (this.likedUserNames.findIndex(k => k === el.username) === -1) {
+            this.likedUserNames.push(el.username);
+          }
+        });
+        console.log('likedUsernames:', this.likedUserNames);
+      }
+    }, error => console.log('error:', error));
    }
 
   ngOnInit() {
     this.loadMembers();
+    this.loadUsersIFollow();
   }
 
   loadMembers() {
@@ -54,6 +73,26 @@ export class MemberListComponent implements OnInit {
   resetFilters() {
     this.userParams = new UserParams(this.user);
     this.loadMembers();
+  }
+
+  loadUsersIFollow() {
+    this.accountService.likedUsersByLogedInUser$.subscribe((res: LikeDto[]) => {
+      if (res) {
+        this.likedUsersByLogedInUser = res;
+        console.log('Users I follow:', res);
+        this.likedUsersByLogedInUser.forEach(el => {
+          if (this.likedUserNames.findIndex(k => k === el.username) === -1) {
+            this.likedUserNames.push(el.username);
+          }
+
+          console.log('likedUsernames:', this.likedUserNames);
+        });
+      }
+    }, error => console.log('error:', error));
+  }
+
+  canBeLiked(username: string): boolean {
+    return this.likedUserNames.findIndex(el => el === username) !== -1 ? true : false;
   }
 
 }

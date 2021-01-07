@@ -17,7 +17,6 @@ export class ListsComponent implements OnInit {
   likedUsersByLogedInUser: LikeDto[] = [];
   canUnlikeMembers = false;
 
-
   constructor(private memeberService: MembersService, private router: Router, private accountService: AccountService) {
     // listen for changes
     this.accountService.likedUsersByLogedInUser$.subscribe((res: LikeDto[]) => {
@@ -30,6 +29,7 @@ export class ListsComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.loadUsersIFollow();
     this.loadLikes();
   }
 
@@ -51,13 +51,12 @@ export class ListsComponent implements OnInit {
   selectMember(memberId: number) {
     return this.router.navigate(['/members/' + memberId]);
   }
-
   // subscribes to the stream from login
   loadUsersIFollow() {
     this.accountService.likedUsersByLogedInUser$.subscribe((res: LikeDto[]) => {
       if (res) {
         this.likedUsersByLogedInUser = res;
-        console.log('Users I follow:', res)
+        console.log('Users I follow:', res);
       }
     }, error => console.log('error:', error));
   }

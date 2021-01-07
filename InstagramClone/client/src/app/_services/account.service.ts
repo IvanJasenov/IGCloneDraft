@@ -127,6 +127,7 @@ setCurrentUser(user: User) {
   getLikedUsersByLogedinUser() {
     this.http.get<LikeDto[]>(this.baseUrl + 'likes?predicates=liked').pipe(
       map((res: LikeDto[]) => {
+        console.log('liked users:', res);
         this.likedUsersByLogedInUser.next(res);
       })
     ).subscribe();

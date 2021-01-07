@@ -19,7 +19,7 @@
          </button>
          <!-- disable this button for already liked users, extra task -->
         <button
-          *ngIf="showLikeButton === true"
+          *ngIf="showLikeButton"
            type="button"
            (click)="addLike(member)"
            class="btn btn-primary mr-1"><i class="fa fa-heart"></i>

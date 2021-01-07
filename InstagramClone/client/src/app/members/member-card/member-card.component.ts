@@ -18,11 +18,14 @@ export class MemberCardComponent implements OnInit {
   @Input() showLikeButton: boolean;
   @Input() canUnlikeMember: boolean;
   constructor(private router: Router, private memberService: MembersService,
-              private alertify: AlertifyService, private accountService: AccountService, private presence: PresenceService,) { }
+              private alertify: AlertifyService, private presence: PresenceService, private accountService: AccountService) { }
 
   ngOnInit() {}
 
 
+
+  // this is my way, programticlly navigate to a route so I dont use the ActivatedRooute,
+  // and then taka a snapshot of the url
   selectMember(id: number) {
     this.router.navigate([`instagramMembers/${this.member.username}`]);
     // this.memberService.userId.next(id);
@@ -34,7 +37,10 @@ export class MemberCardComponent implements OnInit {
     this.memberService.addLike(member.username).subscribe(res => {
       console.log('res:', res);
       this.alertify.success('You liked user:' + member.knownAs);
-      console.log('Users I follow:', res);
+      // fire up the emiter
+      this.accountService.getLikedUsersByLogedinUser();
+      this.canUnlikeMember = true;
+      this.showLikeButton = false;
     }, error => console.log('error:', error));
   }
 
@@ -44,9 +50,12 @@ export class MemberCardComponent implements OnInit {
       console.log('res from unlike:', res);
       if (res.success) {
         console.log('unliked member with username:', this.member.username);
+        this.canUnlikeMember = false;
+        this.showLikeButton = true;
         // fire up the emiter
         this.accountService.getLikedUsersByLogedinUser();
       }
     }, error => console.log('error:', error));
   }
+
 }
