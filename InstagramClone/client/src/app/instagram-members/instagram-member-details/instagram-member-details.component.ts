@@ -113,15 +113,12 @@ export class InstagramMemberDetailsComponent implements OnInit {
     });
   }
 
-  canBeLiked(): boolean {
+  canBeLiked() {
     this.likedUserNames = [];
     this.getMembersIFollow();
     if (this.likedUserNames.findIndex(el => el === this.username) !== -1) {
       this.canBeFollowed = true;
-      return true;
     }
-    return false;
-    // return this.likedUserNames.findIndex(el => el === username) === -1 ? false : true;
   }
 
   removeLike(username: string) {
