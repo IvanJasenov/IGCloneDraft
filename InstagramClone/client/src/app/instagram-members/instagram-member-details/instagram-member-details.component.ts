@@ -24,6 +24,8 @@ export class InstagramMemberDetailsComponent implements OnInit {
   localStorageUsername: string;
   likedUserNames: string[] = [];
   canBeFollowed: boolean;
+  loadTemplate: boolean;
+
 
   constructor(private activatedRoute: ActivatedRoute, private memberService: MembersService,
               private alertify: AlertifyService, private accountService: AccountService) {
@@ -109,6 +111,7 @@ export class InstagramMemberDetailsComponent implements OnInit {
           }
           console.log('likedUsernames:', this.likedUserNames);
         });
+        this.loadTemplate = true;
       }
     });
   }
