@@ -28,17 +28,7 @@ export class InstagramMemberDetailsComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private memberService: MembersService,
               private alertify: AlertifyService, private accountService: AccountService) {
                 this.likedUserNames = [];
-                this.accountService.likedUsersByLogedInUser$.subscribe((res: LikeDto[]) => {
-                  if (res) {
-                    console.log('members I like:', res);
-                    res.forEach(el => {
-                      if (this.likedUserNames.findIndex(k => k === el.username) === -1) {
-                        this.likedUserNames.push(el.username);
-                      }
-                      console.log('likedUsernames:', this.likedUserNames);
-                    });
-                  }
-                });
+                this.getMembersIFollow();
               }
 
   ngOnInit() {
