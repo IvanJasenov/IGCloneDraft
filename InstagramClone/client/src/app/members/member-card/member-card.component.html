@@ -1,16 +1,9 @@
 <div class="card container bg-gradient-dark mt-3 " style="width: 18rem">
   <div class="card-img-wrapper">
     <img class="card-img-top p-2" src="{{member.photoUrl || '../../../assets/default-user.png'}}"
-       alt="{{ member.knownAs }}" title="{{member.knownAs}}">
+      alt="{{ member.knownAs }}" title="{{member.knownAs}}">
     <ul class="list-inline member-icons animate text-center">
       <li class="list-inline-item">
-        <button
-        *ngIf="canUnlikeMember"
-        type="button"
-        class="btn btn-primary mr-1"
-        (click)="removeLike()"
-        title="Unlike User"><i class="fa fa-user-times" aria-hidden="true"></i>
-     </button>
         <button
           type="button"
           class="btn btn-primary mr-1"
@@ -18,6 +11,13 @@
           title="Details"><i class="fa fa-user"></i>
          </button>
          <!-- disable this button for already liked users, extra task -->
+        <button
+          *ngIf="canUnlikeMember"
+          type="button"
+          class="btn btn-primary mr-1"
+          (click)="removeLike()"
+          title="Unlike User"><i class="fa fa-user-times" aria-hidden="true"></i>
+        </button>
         <button
           *ngIf="showLikeButton"
            type="button"
@@ -37,10 +37,11 @@
       <span [class.is-online]="(presence.onlineUsers$ | async).includes(member.username)">
         <i class="fa fa-user"></i>
       </span>
-     &nbsp;{{member.username}}, {{member.age}}
+      &nbsp;{{member.username}}, {{member.age}}
     </h5>
     <p class="card-text text-muted mt-2"> <i class="fas fa-map-marker-alt"></i> &nbsp;
-      <i class="fa fa-map-marker" aria-hidden="true"></i> &nbsp; {{member.city}}</p>
+      <i class="fa fa-map-marker" aria-hidden="true"></i> &nbsp; {{member.city}}
+    </p>
     <p class="card-text text-muted">{{member.introduction | slice:0:120}}...</p>
     <a href="#" class="btn btn-primary">Go somewhere</a>
 
