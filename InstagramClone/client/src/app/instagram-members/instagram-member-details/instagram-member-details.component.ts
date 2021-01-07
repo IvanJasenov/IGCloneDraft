@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TabsetComponent, TabDirective } from 'ngx-bootstrap/tabs';
+import { DeleteUserLike } from 'src/app/_models/InstagramPhotos/deleteUserLike';
+import { LikeDto } from 'src/app/_models/InstagramPhotos/likesDto';
 import { Member } from 'src/app/_models/member';
 import { AccountService } from 'src/app/_services/account.service';
 import { AlertifyService } from 'src/app/_services/alertify.service';
@@ -20,19 +22,39 @@ export class InstagramMemberDetailsComponent implements OnInit {
   tabSelected: string;
   loadPhotos: boolean;
   localStorageUsername: string;
+  likedUserNames: string[] = [];
+  canBeFollowed: boolean;
 
   constructor(private activatedRoute: ActivatedRoute, private memberService: MembersService,
-    private alertify: AlertifyService, private accountService: AccountService) { }
+              private alertify: AlertifyService, private accountService: AccountService) {
+                this.likedUserNames = [];
+                this.accountService.likedUsersByLogedInUser$.subscribe((res: LikeDto[]) => {
+                  if (res) {
+                    console.log('members I like:', res);
+                    res.forEach(el => {
+                      if (this.likedUserNames.findIndex(k => k === el.username) === -1) {
+                        this.likedUserNames.push(el.username);
+                      }
+                      console.log('likedUsernames:', this.likedUserNames);
+                    });
+                  }
+                });
+              }
 
   ngOnInit() {
-
-    setTimeout(() => {this.loadMember();this.getCurrentUser();}, 400)
-
+      this.loadMember();
+      if (this.username) {
+         this.getCurrentUser();
+         this.getMembersIFollow();
+         setTimeout(() => {
+          this.canBeLiked();
+        }, 300);
+      }
   }
 
   loadMember() {
     this.username = this.activatedRoute.snapshot.params.username;
-    console.log('username:', this.username)
+    console.log('username:', this.username);
     this.memberService.getMemberByUsername(this.username).subscribe((res: Member) => {
       this.member = res;
       console.log('loaded memeber:', this.member);
@@ -46,6 +68,9 @@ export class InstagramMemberDetailsComponent implements OnInit {
     this.memberService.addLike(memberUsername).subscribe(res => {
       console.log('res:', res);
       this.alertify.success('You liked user:' + this.member.knownAs);
+      // fire up the emiter
+      this.accountService.getLikedUsersByLogedinUser();
+      this.canBeFollowed = true;
     }, error => console.log('error:', error));
   }
 
@@ -56,14 +81,13 @@ export class InstagramMemberDetailsComponent implements OnInit {
         console.log('liked by:', res.length);
         this.followers = res;
         console.log('followers:', this.followers);
-      }
-      else if (predicates === 'liked') {
+      } else if (predicates === 'liked') {
         console.log('Following:', res.length);
         this.followingPeople = res;
         console.log('following:', this.followingPeople);
       }
 
-    }, error => console.log('error:', error))
+    }, error => console.log('error:', error));
   }
 
   getCurrentUser() {
@@ -83,6 +107,44 @@ export class InstagramMemberDetailsComponent implements OnInit {
     if (reload) {
       this.ngOnInit();
     }
+  }
+
+  getMembersIFollow() {
+    this.accountService.likedUsersByLogedInUser$.subscribe((res: LikeDto[]) => {
+      if (res) {
+        console.log('members I like:', res);
+        res.forEach(el => {
+          if (this.likedUserNames.findIndex(k => k === el.username) === -1) {
+            this.likedUserNames.push(el.username);
+          }
+          console.log('likedUsernames:', this.likedUserNames);
+        });
+      }
+    });
+  }
+
+  canBeLiked(): boolean {
+    this.likedUserNames = [];
+    this.getMembersIFollow();
+    if (this.likedUserNames.findIndex(el => el === this.username) !== -1) {
+      this.canBeFollowed = true;
+      return true;
+    }
+    return false;
+    // return this.likedUserNames.findIndex(el => el === username) === -1 ? false : true;
+  }
+
+  removeLike(username: string) {
+    console.log('remove like for username:', username);
+    this.memberService.deleteLike(this.member.username).subscribe((res: DeleteUserLike) => {
+      console.log('res from unlike:', res);
+      if (res.success) {
+        console.log('unliked member with username:', this.member.username);
+        // fire up the emiter
+        this.accountService.getLikedUsersByLogedinUser();
+        this.canBeFollowed = false;
+      }
+    }, error => console.log('error:', error));
   }
 
 }

@@ -1,4 +1,4 @@
-<div *ngIf="member" class="container mt-4">
+<div *ngIf="member && username" class="container mt-4">
   <!-- when done, ship thos two rows into seperate components -->
   <div class="row">
     <!-- <h2> User info</h2> -->
@@ -10,8 +10,22 @@
         <h3 class="text-black-50 m-auto" style="text-align: center">{{member.username}}</h3>
         <button class="btn btn-outline-info ml-2" type="button"
         [routerLink]="['/members', member.id]" [queryParams]="{tab: 3}">Message</button>
-        <button class="btn btn-lg ml-2" type="button" title="follow"
-        (click)="followUser(member.username)"> <i class="fa fa-user-plus"></i> </button>
+
+        <button
+          *ngIf="!canBeFollowed"
+          class="btn ml-2"
+          type="button"
+          title="Follow User"
+          (click)="followUser(username)"> <i class="fas fa-user-check" style="color: green"></i>
+        </button>
+        <button
+          *ngIf="canBeFollowed"
+          type="button"
+          class="btn btn-primary mr-1"
+          (click)="removeLike(username)"
+          title="Unfollow User"><i class="fas fa-user-slash"></i>
+      </button>
+
       </div>
       <div class="container">
         <span>{{member.photosDto.length}} posts</span>
