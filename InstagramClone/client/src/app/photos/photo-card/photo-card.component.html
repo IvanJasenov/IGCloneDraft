@@ -58,7 +58,7 @@
               <button class="btn" style="display:inline;" type="button"
                 tooltip="Edit Comment"
                 (click)="editComment(comment.comment, photoElement.id)">
-                <i *ngIf="comment.commentCreator.username === currentUsername" class="fa fa-pencil" aria-hidden="true"></i>
+                <i *ngIf="comment.commentCreator.username === currentUsername" class="fa fa-trash fa-lg" aria-hidden="true"></i>
               </button>
 
             </div>
@@ -95,7 +95,7 @@
               <button class="btn" style="display:inline;" type="button"
                 tooltip="Edit Comment" placement="right"
                 (click)="editComment(comment.comment, photoElement.id)">
-                <i *ngIf="comment.commentCreator.username === currentUsername" class="fa fa-pencil" aria-hidden="true"></i>
+                <i *ngIf="comment.commentCreator.username === currentUsername" class="far fa-edit fa-lg" aria-hidden="true"></i>
               </button>
               </div>
             </div>
