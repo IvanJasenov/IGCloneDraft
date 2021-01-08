@@ -67,7 +67,7 @@ namespace API.Data
             var notLikedusers = _context.Users.AsQueryable();
             LikedIds.ForEach(el =>
             {
-                notLikedusers = notLikedusers.Where(u => u.Id != el && u.Id != userId).AsQueryable();
+                notLikedusers = notLikedusers.Where(u => u.Id != el && u.Id != userId && u.UserName.ToLower() != "admin").AsQueryable();
             });
             // projection
             var notlikedUsers = notLikedusers.OrderByDescending(i => i.LastActive)
