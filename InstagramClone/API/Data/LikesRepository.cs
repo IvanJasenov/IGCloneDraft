@@ -64,11 +64,10 @@ namespace API.Data
             var users_I_LikeIds = likes.Where(like => like.SourceUserId == userId).Select(el => el.LikedUserId).AsQueryable();
             List<int> LikedIds = await users_I_LikeIds.ToListAsync();
 
-            // users minus the liked, filter by id fromt he list of liked users to get the not liked
             var notLikedusers = _context.Users.AsQueryable();
             LikedIds.ForEach(el =>
             {
-                notLikedusers = notLikedusers.Where(u => u.Id != el).AsQueryable();
+                notLikedusers = notLikedusers.Where(u => u.Id != el && u.Id != userId).AsQueryable();
             });
             // projection
             var notlikedUsers = notLikedusers.Select(user => new LikeDto
@@ -80,8 +79,8 @@ namespace API.Data
                 PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain).Url,
                 City = user.City
             }).AsQueryable();
-            // execute 
-            var notLikedUsersList = await notlikedUsers.ToListAsync();
+
+            List<LikeDto> notLikedUsersList = await notlikedUsers.ToListAsync();
 
             return notLikedUsersList;
         }

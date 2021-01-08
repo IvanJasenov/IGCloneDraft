@@ -29,6 +29,9 @@ export class AccountService {
   private likedUsersByLogedInUser = new BehaviorSubject<LikeDto[]>(null);
   likedUsersByLogedInUser$ = this.likedUsersByLogedInUser.asObservable();
 
+  private notLikedUsersByLogedInUser = new BehaviorSubject<LikeDto[]>(null);
+  notLikedUsersByLogedInUser$ = this.notLikedUsersByLogedInUser.asObservable();
+
   constructor(private http: HttpClient, private presence: PresenceService) { }
 
   login(model: any) {
@@ -129,6 +132,15 @@ setCurrentUser(user: User) {
       map((res: LikeDto[]) => {
         console.log('liked users:', res);
         this.likedUsersByLogedInUser.next(res);
+      })
+    ).subscribe();
+  }
+
+  getNotLikedusersByLogedInUser() {
+    this.http.get<LikeDto[]>(this.baseUrl + 'likes/users-not-followed').pipe(
+      map((res: LikeDto[]) => {
+        console.log('not liked users:', res);
+        this.notLikedUsersByLogedInUser.next(res);
       })
     ).subscribe();
   }
