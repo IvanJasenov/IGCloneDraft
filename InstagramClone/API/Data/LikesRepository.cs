@@ -58,6 +58,34 @@ namespace API.Data
             return await PagedList<LikeDto>.CreateAsync(likedUsers, likesParams.PageNumber, likesParams.ItemsPerPage);
         }
 
+        public async Task<List<LikeDto>> GetUsersNotLiked(int userId)
+        {
+            var likes = _context.Likes.AsQueryable();
+            var users_I_LikeIds = likes.Where(like => like.SourceUserId == userId).Select(el => el.LikedUserId).AsQueryable();
+            List<int> LikedIds = await users_I_LikeIds.ToListAsync();
+
+            // users minus the liked, filter by id fromt he list of liked users to get the not liked
+            var notLikedusers = _context.Users.AsQueryable();
+            LikedIds.ForEach(el =>
+            {
+                notLikedusers = notLikedusers.Where(u => u.Id != el).AsQueryable();
+            });
+            // projection
+            var notlikedUsers = notLikedusers.Select(user => new LikeDto
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                KnownAs = user.KnownAs,
+                Age = user.DateOfBirth.CalculateAge(),
+                PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain).Url,
+                City = user.City
+            }).AsQueryable();
+            // execute 
+            var notLikedUsersList = await notlikedUsers.ToListAsync();
+
+            return notLikedUsersList;
+        }
+
         // list of users that this user has liked
         public async Task<AppUser> GetUserWithLikes(int userId)
         {

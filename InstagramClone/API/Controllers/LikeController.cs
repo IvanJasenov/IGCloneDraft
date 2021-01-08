@@ -95,7 +95,19 @@ namespace API.Controllers
 
             return Ok(userLikes);
         }
-         
+
+        [HttpGet("users-not-followed")]
+        public async Task<ActionResult<List<LikeDto>>> GetNotLikedUsers()
+        {
+            int userId = HttpContext.GetUserId();
+            List<LikeDto> users = await _unitOfWork.LikesRepository.GetUsersNotLiked(userId);
+            if (users.Count > 0)
+            {
+                return Ok(users);
+            }
+            return BadRequest("You like all users");
+        }
+
 
     }
 }

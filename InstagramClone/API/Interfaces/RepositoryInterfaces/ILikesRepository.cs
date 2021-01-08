@@ -16,5 +16,7 @@ namespace API.Interfaces
 
         // list of user that have been liked or liked by some user
         Task<PagedList<LikeDto>> GetUserLikes(LikesParams likesParams);
+
+        Task<List<LikeDto>> GetUsersNotLiked(int userId);
     }
 }
