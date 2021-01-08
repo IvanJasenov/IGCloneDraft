@@ -70,15 +70,17 @@ namespace API.Data
                 notLikedusers = notLikedusers.Where(u => u.Id != el && u.Id != userId).AsQueryable();
             });
             // projection
-            var notlikedUsers = notLikedusers.Select(user => new LikeDto
-            {
-                Id = user.Id,
-                Username = user.UserName,
-                KnownAs = user.KnownAs,
-                Age = user.DateOfBirth.CalculateAge(),
-                PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain).Url,
-                City = user.City
-            }).AsQueryable();
+            var notlikedUsers = notLikedusers.OrderByDescending(i => i.LastActive)
+                .Take(5)
+                .Select(user => new LikeDto
+                {
+                    Id = user.Id,
+                    Username = user.UserName,
+                    KnownAs = user.KnownAs,
+                    Age = user.DateOfBirth.CalculateAge(),
+                    PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain).Url,
+                    City = user.City
+                }).AsQueryable();
 
             List<LikeDto> notLikedUsersList = await notlikedUsers.ToListAsync();
 
