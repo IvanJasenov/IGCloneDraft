@@ -92,7 +92,7 @@ export class PhotoCardComponent implements OnInit {
       this.photoService.createPhotoComment(photoComment, this.photoElement.id).subscribe((res:PhCommentCreatorDto) => {
       this.photoElement.phCommentCreatorDtos.push(res);
       this.photoCommentForm.reset();
-      this.editMode = !this.editMode;
+      this.editMode = false;
       console.log('photo commment:', res);
     }, error => console.log('error:', error));
     }
