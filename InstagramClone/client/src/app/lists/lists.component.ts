@@ -16,6 +16,8 @@ export class ListsComponent implements OnInit {
   predicates = 'liked';
   likedUsersByLogedInUser: LikeDto[] = [];
   canUnlikeMembers = false;
+  likedUserNames: string[] = [];
+  unlikeMember = false;
 
   constructor(private memeberService: MembersService, private router: Router, private accountService: AccountService) {
     // listen for changes
@@ -53,12 +55,22 @@ export class ListsComponent implements OnInit {
   }
   // subscribes to the stream from login
   loadUsersIFollow() {
+    this.accountService.getLikedUsersByLogedinUser();
     this.accountService.likedUsersByLogedInUser$.subscribe((res: LikeDto[]) => {
       if (res) {
         this.likedUsersByLogedInUser = res;
         console.log('Users I follow:', res);
+        this.likedUserNames = [];
+        this.likedUsersByLogedInUser.forEach(el => {
+          this.likedUserNames.push(el.username);
+        });
       }
     }, error => console.log('error:', error));
+  }
+
+  checkLikedUser(username: string) {
+    this.unlikeMember = this.likedUserNames.indexOf(username) !== -1 ? true : false;
+    return this.unlikeMember;
   }
 
 }

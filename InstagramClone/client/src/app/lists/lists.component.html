@@ -21,7 +21,8 @@
 <div *ngFor="let member of members">
   <app-member-card
     [member]="member"
-    [showLikeButton]="false">
+    [showLikeButton]="false"
+    [canUnlikeMember]="checkLikedUser(member.username)">
   </app-member-card>
 </div>
 
