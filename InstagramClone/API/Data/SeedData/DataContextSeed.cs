@@ -52,6 +52,7 @@ namespace API.Data.SeedData
                 var admin = new AppUser
                 {
                     UserName = "admin",
+                    KnownAs = "admin",
                     Gender = "Male"
                 };
 
