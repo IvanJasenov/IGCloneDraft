@@ -79,7 +79,7 @@ namespace API.Data
         {
             // ignore query filters for now, see whether you should handle each image from admin
             var result = await _dataContext.Photos
-                                                  .IgnoreQueryFilters()
+                                                  
                                                   .Include(el => el.AppUser)
                                                   .Include(el => el.PhotoComments)  // keep an eye on ThenInclude, important
                                                   .ThenInclude(el => el.AppUser)
