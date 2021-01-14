@@ -71,8 +71,8 @@ namespace API.Data
             });
             // projection
             var notlikedUsers = notLikedusers.OrderByDescending(i => i.LastActive)
-                .Take(5)
-                .Where(u => u.UserName.ToLower() != "admin")
+                .Take(6)
+                .Where(u => u.UserName.ToLower() != "admin" && u.Id != userId)
                 .Select(user => new LikeDto
                 {
                     Id = user.Id,
